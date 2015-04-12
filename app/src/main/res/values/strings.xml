@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 Alexander Martinz
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <string name="app_name" translatable="false">QuickLoader</string>
+    <string name="test_url" translatable="false">https://goo.gl/aVsley</string>
+    <string name="funny_cat_pic_23" translatable="false">funny_cat_picture_23.png</string>
+
+    <string name="download">Download</string>
+    <string name="enter_url">Enter URL to file</string>
+    <string name="save_file_as">Save file as</string>
+    <string name="auto_detect">Auto detect</string>
+
+    <string name="please_enter_url">Please enter an URL!</string>
+    <string name="filename_must_not_be_empty">Filename must not be empty!</string>
+
+    <string name="verify_url_title">Verify URL</string>
+    <string name="verify_url_message">Please verify that the following URL is valid\n\n%s</string>
+</resources>
