@@ -42,8 +42,8 @@ android {
         applicationId "alexander.martinz.quickloader"
         minSdkVersion 22
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 12
+        versionName "1.0.2"
 
         def String localProps = System.getenv('SIGNING_PROP_FILE')
         if (localProps == null) {
