@@ -157,6 +157,7 @@ public class DownloadDialog extends Activity {
                 .allowScanningByMediaScanner();
 
         dm.enqueue(request);
+        showToast(getString(R.string.started_download_toast, fileName));
     }
 
     private void showToast(String text) {
