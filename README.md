@@ -1,6 +1,8 @@
 QuickLoader
 =====
 
+![QuickLoader Logo](/art/ic_launcher_web_graphic.png)
+
 This is a sample app to demonstrate how to implement an app as candidate for "Power Button Actions"
 in NamelessRom.
 
