@@ -36,6 +36,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class DownloadDialog extends Activity {
+    private AlertDialog mDialog;
+
     private EditText mUrl;
     private EditText mFileName;
     private Switch mAutoDetect;
@@ -109,7 +111,7 @@ public class DownloadDialog extends Activity {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        startDownload(finalUrl, fileName);
+                                        startDownload(finalUrl, fileName, mDialog);
                                         dialogInterface.dismiss();
                                     }
                                 });
@@ -125,16 +127,19 @@ public class DownloadDialog extends Activity {
         builder.setCancelable(true);
         builder.setView(v);
 
-        final AlertDialog dialog = builder.create();
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        if (mDialog != null) {
+            mDialog.dismiss();
+        }
+        mDialog = builder.create();
+        mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override public void onDismiss(DialogInterface dialogInterface) {
                 finish();
             }
         });
-        dialog.show();
+        mDialog.show();
     }
 
-    private void startDownload(String url, String fileName) {
+    private void startDownload(String url, String fileName, AlertDialog alertDialog) {
         final DownloadManager dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
         final DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
@@ -146,6 +151,11 @@ public class DownloadDialog extends Activity {
                 .allowScanningByMediaScanner();
 
         dm.enqueue(request);
+
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+        }
+
         showToast(getString(R.string.started_download_toast, fileName), true);
     }
 
