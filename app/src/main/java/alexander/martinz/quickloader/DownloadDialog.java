@@ -64,25 +64,14 @@ public class DownloadDialog extends Activity {
         });
 
         mUrl.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) { }
 
             @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!mAutoDetect.isChecked()) {
-                    return;
+                final String name = ((charSequence != null) ? charSequence.toString() : null);
+                final String finalName = extractFilename(name);
+                if (finalName != null) {
+                    mFileName.setText(finalName);
                 }
-
-                final String name = charSequence.toString().trim();
-                if (TextUtils.isEmpty(name)) {
-                    return;
-                }
-
-                final String[] parts = name.split("/");
-                if (parts.length < 2) {
-                    return;
-                }
-
-                mFileName.setText(parts[parts.length - 1].trim());
             }
 
             @Override public void afterTextChanged(Editable editable) { }
@@ -93,13 +82,13 @@ public class DownloadDialog extends Activity {
             @Override public void onClick(View view) {
                 String url = getText(mUrl);
                 if (TextUtils.isEmpty(url)) {
-                    showToast(getString(R.string.please_enter_url));
+                    showToast(getString(R.string.please_enter_url), false);
                     return;
                 }
 
                 String name = getText(mFileName);
                 if (TextUtils.isEmpty(name)) {
-                    showToast(getString(R.string.filename_must_not_be_empty));
+                    showToast(getString(R.string.filename_must_not_be_empty), false);
                     return;
                 }
 
@@ -157,15 +146,19 @@ public class DownloadDialog extends Activity {
                 .allowScanningByMediaScanner();
 
         dm.enqueue(request);
-        showToast(getString(R.string.started_download_toast, fileName));
+        showToast(getString(R.string.started_download_toast, fileName), true);
     }
 
-    private void showToast(String text) {
+    private void showToast(String text, boolean isLong) {
+        showToast(text, isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+    }
+
+    private void showToast(String text, int length) {
         if (mToast != null) {
             mToast.cancel();
         }
 
-        mToast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+        mToast = Toast.makeText(this, text, length);
         mToast.show();
     }
 
@@ -175,6 +168,37 @@ public class DownloadDialog extends Activity {
         }
 
         return editText.getText().toString().trim();
+    }
+
+    public static String extractFilename(final String name) {
+        if (name == null) {
+            return null;
+        }
+
+        String finalName = name.trim();
+        if (TextUtils.isEmpty(finalName)) {
+            return null;
+        }
+
+        // split the url and get the last part, which should be the filename
+        // example https://example.com/images/new/random_image.png -> random_image.png
+        final String[] parts = finalName.split("/");
+        if (parts.length < 2) {
+            return null;
+        }
+
+        finalName = parts[parts.length - 1];
+
+        // if the last part of the url contains a question mark (?) there is most likely the case
+        // that a query is attached to the file name, lets get rid of it
+        final int index = finalName.indexOf("?");
+        if (index != -1) {
+            // random_image.png?cdn_timestamp=1058239&session=92990 -> random_image.png
+            finalName = finalName.substring(0, index);
+        }
+
+        // let's trim it a last time and it should be good to go
+        return finalName.trim();
     }
 
 }

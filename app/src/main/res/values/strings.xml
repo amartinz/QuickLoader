@@ -31,5 +31,5 @@
     <string name="verify_url_title">Verify URL</string>
     <string name="verify_url_message">Please verify that the following URL is valid\n\n%s</string>
 
-    <string name="started_download_toast">Started downloading \"%s\"!</string>
+    <string name="started_download_toast">Started downloading \"%s\"</string>
 </resources>
