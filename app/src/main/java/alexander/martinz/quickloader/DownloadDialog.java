@@ -23,9 +23,11 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -40,13 +42,17 @@ import android.widget.Toast;
 import hugo.weaving.DebugLog;
 
 public class DownloadDialog extends Activity {
+    private static final String KEY_AUTO_DETECT = "auto_detect";
+    private static final String KEY_AUTO_EXTRACT = "auto_extract";
+
     private AlertDialog mDialog;
 
     private EditText mUrl;
     private EditText mFileName;
-    private Switch mAutoDetect;
 
     private Toast mToast;
+
+    private SharedPreferences mPreferences;
 
     private final TextWatcher mUrlTextWatcher = new TextWatcher() {
         @Override public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) { }
@@ -66,21 +72,35 @@ public class DownloadDialog extends Activity {
         super.onCreate(savedInstanceState);
         final View v = getLayoutInflater().inflate(R.layout.dialog_download, null, false);
 
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         mUrl = (EditText) v.findViewById(R.id.et_download_url);
         mUrl.addTextChangedListener(mUrlTextWatcher);
         mFileName = (EditText) v.findViewById(R.id.et_download_file_name);
 
-        mAutoDetect = (Switch) v.findViewById(R.id.switch_auto_detect);
-        mAutoDetect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        final Switch autoDetect = (Switch) v.findViewById(R.id.switch_auto_detect);
+        autoDetect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 mFileName.setEnabled(!checked);
+                mPreferences.edit().putBoolean(KEY_AUTO_DETECT, checked).apply();
+            }
+        });
+        autoDetect.setChecked(mPreferences.getBoolean(KEY_AUTO_DETECT, true));
+
+        final Switch autoExtract = (Switch) v.findViewById(R.id.switch_auto_extract);
+        autoExtract.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    extractUrlFromClipboard();
+                }
+                mPreferences.edit().putBoolean(KEY_AUTO_EXTRACT, checked).apply();
             }
         });
 
         final TextView tvAutoDetect = (TextView) v.findViewById(R.id.tv_auto_detect);
         tvAutoDetect.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
-                mAutoDetect.toggle();
+                autoDetect.toggle();
             }
         });
 
@@ -146,14 +166,25 @@ public class DownloadDialog extends Activity {
     @Override protected void onResume() {
         super.onResume();
 
-        // check if the user has already copied any url and insert it
-        if (mUrl != null && mUrlTextWatcher != null) {
-            final String urlFromClipboard = getUrlFromClipboard();
-            if (!TextUtils.isEmpty(urlFromClipboard)) {
-                mUrl.setText(urlFromClipboard);
-                mUrlTextWatcher.onTextChanged(urlFromClipboard, 0, 0, urlFromClipboard.length());
-            }
+        if (mPreferences == null) {
+            mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         }
+
+        // check if the user has already copied any url and insert it
+        final boolean shouldAutoExtract = mPreferences.getBoolean(KEY_AUTO_EXTRACT, true);
+        if (shouldAutoExtract && mUrl != null && mUrlTextWatcher != null) {
+            extractUrlFromClipboard();
+        }
+    }
+
+    private boolean extractUrlFromClipboard() {
+        final String urlFromClipboard = getUrlFromClipboard();
+        if (!TextUtils.isEmpty(urlFromClipboard)) {
+            mUrl.setText(urlFromClipboard);
+            mUrlTextWatcher.onTextChanged(urlFromClipboard, 0, 0, urlFromClipboard.length());
+            return true;
+        }
+        return false;
     }
 
     private void startDownload(String url, String fileName, AlertDialog alertDialog) {

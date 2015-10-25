@@ -24,6 +24,7 @@
     <string name="enter_url">Enter URL to file</string>
     <string name="save_file_as">Save file as</string>
     <string name="auto_detect">Auto detect</string>
+    <string name="auto_extract">Auto insert URL from clipboard</string>
 
     <string name="please_enter_url">Please enter an URL!</string>
     <string name="filename_must_not_be_empty">Filename must not be empty!</string>
