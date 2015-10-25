@@ -49,6 +49,7 @@ public class DownloadDialog extends Activity {
 
     private EditText mUrl;
     private EditText mFileName;
+    private Switch mAutoDetect;
 
     private Toast mToast;
 
@@ -58,6 +59,10 @@ public class DownloadDialog extends Activity {
         @Override public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) { }
 
         @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            if (mAutoDetect == null || !mAutoDetect.isChecked()) {
+                return;
+            }
+
             final String name = ((charSequence != null) ? charSequence.toString() : null);
             final String finalName = extractFilename(name);
             if (finalName != null) {
@@ -78,14 +83,21 @@ public class DownloadDialog extends Activity {
         mUrl.addTextChangedListener(mUrlTextWatcher);
         mFileName = (EditText) v.findViewById(R.id.et_download_file_name);
 
-        final Switch autoDetect = (Switch) v.findViewById(R.id.switch_auto_detect);
-        autoDetect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mAutoDetect = (Switch) v.findViewById(R.id.switch_auto_detect);
+        mAutoDetect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 mFileName.setEnabled(!checked);
+                if (mUrl != null && mUrlTextWatcher != null) {
+                    final Editable urlEditable = mUrl.getText();
+                    final String url = ((urlEditable != null) ? urlEditable.toString() : null);
+                    if (!TextUtils.isEmpty(url)) {
+                        mUrlTextWatcher.onTextChanged(url, 0, 0, url.length());
+                    }
+                }
                 mPreferences.edit().putBoolean(KEY_AUTO_DETECT, checked).apply();
             }
         });
-        autoDetect.setChecked(mPreferences.getBoolean(KEY_AUTO_DETECT, true));
+        mAutoDetect.setChecked(mPreferences.getBoolean(KEY_AUTO_DETECT, true));
 
         final Switch autoExtract = (Switch) v.findViewById(R.id.switch_auto_extract);
         autoExtract.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -100,7 +112,7 @@ public class DownloadDialog extends Activity {
         final TextView tvAutoDetect = (TextView) v.findViewById(R.id.tv_auto_detect);
         tvAutoDetect.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
-                autoDetect.toggle();
+                mAutoDetect.toggle();
             }
         });
 
