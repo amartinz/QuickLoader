@@ -15,10 +15,11 @@
  */
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.jakewharton.hugo'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
 
     signingConfigs {
         release {
@@ -41,9 +42,9 @@ android {
     defaultConfig {
         applicationId "alexander.martinz.quickloader"
         minSdkVersion 22
-        targetSdkVersion 22
-        versionCode 12
-        versionName "1.0.2"
+        targetSdkVersion 23
+        versionCode 13
+        versionName "1.0.3"
 
         def String localProps = System.getenv('SIGNING_PROP_FILE')
         if (localProps == null) {
@@ -63,17 +64,8 @@ android {
         }
     }
 
-    dexOptions {
-        incremental false
-        javaMaxHeapSize "2048M"
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-}
-
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
 }

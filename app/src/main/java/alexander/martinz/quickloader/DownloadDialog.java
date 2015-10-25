@@ -19,6 +19,8 @@ package alexander.martinz.quickloader;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -35,6 +37,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import hugo.weaving.DebugLog;
+
 public class DownloadDialog extends Activity {
     private AlertDialog mDialog;
 
@@ -44,11 +48,26 @@ public class DownloadDialog extends Activity {
 
     private Toast mToast;
 
+    private final TextWatcher mUrlTextWatcher = new TextWatcher() {
+        @Override public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) { }
+
+        @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            final String name = ((charSequence != null) ? charSequence.toString() : null);
+            final String finalName = extractFilename(name);
+            if (finalName != null) {
+                mFileName.setText(finalName);
+            }
+        }
+
+        @Override public void afterTextChanged(Editable editable) { }
+    };
+
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final View v = getLayoutInflater().inflate(R.layout.dialog_download, null, false);
 
         mUrl = (EditText) v.findViewById(R.id.et_download_url);
+        mUrl.addTextChangedListener(mUrlTextWatcher);
         mFileName = (EditText) v.findViewById(R.id.et_download_file_name);
 
         mAutoDetect = (Switch) v.findViewById(R.id.switch_auto_detect);
@@ -65,36 +84,21 @@ public class DownloadDialog extends Activity {
             }
         });
 
-        mUrl.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence cs, int i, int i1, int i2) { }
-
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                final String name = ((charSequence != null) ? charSequence.toString() : null);
-                final String finalName = extractFilename(name);
-                if (finalName != null) {
-                    mFileName.setText(finalName);
-                }
-            }
-
-            @Override public void afterTextChanged(Editable editable) { }
-        });
-
         final Button startDownload = (Button) v.findViewById(R.id.start_download);
         startDownload.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
-                String url = getText(mUrl);
+                final String url = getText(mUrl);
                 if (TextUtils.isEmpty(url)) {
                     showToast(getString(R.string.please_enter_url), false);
                     return;
                 }
 
-                String name = getText(mFileName);
+                final String name = getText(mFileName);
                 if (TextUtils.isEmpty(name)) {
                     showToast(getString(R.string.filename_must_not_be_empty), false);
                     return;
                 }
 
-                final String finalUrl = url;
                 final String fileName = name.replace(" ", "_");
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(DownloadDialog.this);
@@ -111,7 +115,7 @@ public class DownloadDialog extends Activity {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        startDownload(finalUrl, fileName, mDialog);
+                                        startDownload(url, fileName, mDialog);
                                         dialogInterface.dismiss();
                                     }
                                 });
@@ -139,13 +143,25 @@ public class DownloadDialog extends Activity {
         mDialog.show();
     }
 
+    @Override protected void onResume() {
+        super.onResume();
+
+        // check if the user has already copied any url and insert it
+        if (mUrl != null && mUrlTextWatcher != null) {
+            final String urlFromClipboard = getUrlFromClipboard();
+            if (!TextUtils.isEmpty(urlFromClipboard)) {
+                mUrl.setText(urlFromClipboard);
+                mUrlTextWatcher.onTextChanged(urlFromClipboard, 0, 0, urlFromClipboard.length());
+            }
+        }
+    }
+
     private void startDownload(String url, String fileName, AlertDialog alertDialog) {
         final DownloadManager dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
         final DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setTitle(fileName)
-                .setNotificationVisibility(
-                        DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setVisibleInDownloadsUi(true)
                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
                 .allowScanningByMediaScanner();
@@ -180,7 +196,35 @@ public class DownloadDialog extends Activity {
         return editText.getText().toString().trim();
     }
 
-    public static String extractFilename(final String name) {
+    @DebugLog private String getUrlFromClipboard() {
+        final ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        // if we have a clip ...
+        if (clipboardManager != null && clipboardManager.hasPrimaryClip()) {
+            final ClipData clipData = clipboardManager.getPrimaryClip();
+            // ... and if the clip has items ...
+            if (clipData.getItemCount() > 0) {
+                // ... get the latest item and check if it is an URL
+                final ClipData.Item item = clipData.getItemAt(0);
+                final CharSequence clipCharSequence = item.getText();
+                String clipText = ((clipCharSequence != null) ? clipCharSequence.toString() : null);
+                if (clipText != null) {
+                    // trim it, just to be sure...
+                    clipText = clipText.trim();
+                }
+                if (!TextUtils.isEmpty(clipText)) {
+                    // yes i know, but it is easier that way!
+                    if (clipText.startsWith("http")) {
+                        return clipText;
+                    }
+                }
+            }
+        }
+
+        // if anything failed, return null
+        return null;
+    }
+
+    @DebugLog public static String extractFilename(final String name) {
         if (name == null) {
             return null;
         }
