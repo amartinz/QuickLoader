@@ -13,21 +13,21 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  -->
-
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="alexander.martinz.quickloader">
+-->
+<manifest package="alexander.martinz.quickloader"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-feature
         android:name="org.namelessrom.android"
         android:required="true" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <uses-permission android:name="android.permission.LAUNCH_WITH_POWER_CHORD" />
+    <uses-permission android:name="cyanogenmod.permission.PUBLISH_CUSTOM_TILE" />
 
     <application
         android:allowBackup="true"
@@ -35,7 +35,6 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".DownloadDialog"
             android:label="@string/app_name"
@@ -48,6 +47,14 @@
             </intent-filter>
         </activity>
 
+        <receiver
+            android:name=".BootupReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -173,6 +174,12 @@ public class DownloadDialog extends Activity {
             }
         });
         mDialog.show();
+
+        AsyncTask.execute(new Runnable() {
+            @Override public void run() {
+                CompatHelper.publishCustomTile(DownloadDialog.this);
+            }
+        });
     }
 
     @Override protected void onResume() {
