@@ -24,15 +24,6 @@ public class BootupReceiver extends BroadcastReceiver {
     public BootupReceiver() { }
 
     @Override public void onReceive(final Context context, Intent intent) {
-        if (intent == null) {
-            return;
-        }
-
-        final String action = intent.getAction();
-        if (!Intent.ACTION_BOOT_COMPLETED.equals(action)) {
-            return;
-        }
-
         AsyncTask.execute(new Runnable() {
             @Override public void run() {
                 CompatHelper.publishCustomTile(context);
