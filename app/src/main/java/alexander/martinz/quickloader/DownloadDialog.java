@@ -16,6 +16,7 @@
 
 package alexander.martinz.quickloader;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -76,7 +77,7 @@ public class DownloadDialog extends Activity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final View v = getLayoutInflater().inflate(R.layout.dialog_download, null, false);
+        @SuppressLint("InflateParams") final View v = getLayoutInflater().inflate(R.layout.dialog_download, null, false);
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -243,7 +244,8 @@ public class DownloadDialog extends Activity {
             return null;
         }
 
-        return editText.getText().toString().trim();
+        final String content = editText.getText().toString();
+        return (TextUtils.isEmpty(content) ? null : content.trim());
     }
 
     @DebugLog private String getUrlFromClipboard() {
