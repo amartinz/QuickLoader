@@ -24,6 +24,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -154,6 +155,14 @@ public class DownloadDialog extends Activity {
 
                 final AlertDialog dialog = builder.create();
                 dialog.show();
+            }
+        });
+
+        final Button configure = (Button) v.findViewById(R.id.configure);
+        configure.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                final Intent intent = new Intent(DownloadDialog.this, SettingsActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -16,6 +16,7 @@
   -->
 
 <resources>
+    <string name="configure">Configure</string>
     <string name="download">Download</string>
     <string name="enter_url">Enter URL to file</string>
     <string name="save_file_as">Save file as</string>
