@@ -23,6 +23,12 @@
     <PreferenceCategory
         android:key="cat_notification"
         android:title="@string/notification">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/key_publish_notification_bootup"
+            android:persistent="true"
+            android:summary="@string/pref_publish_notification_bootup_summary"
+            android:title="@string/pref_publish_notification_bootup_title" />
         <Preference
             android:key="@string/key_publish_notification"
             android:summary="@string/pref_publish_notification_summary"

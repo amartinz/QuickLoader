@@ -24,5 +24,6 @@
     <string name="key_auto_extract" translatable="false">auto_extract</string>
     <string name="key_publish_tile" translatable="false">publish_tile</string>
     <string name="key_publish_notification" translatable="false">publish_notification</string>
+    <string name="key_publish_notification_bootup" translatable="false">publish_notification_bootup</string>
     <string name="key_cancel_notification" translatable="false">cancel_notification</string>
 </resources>

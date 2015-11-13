@@ -18,7 +18,9 @@ package alexander.martinz.quickloader;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 
 public class BootupReceiver extends BroadcastReceiver {
     public BootupReceiver() { }
@@ -26,6 +28,11 @@ public class BootupReceiver extends BroadcastReceiver {
     @Override public void onReceive(final Context context, Intent intent) {
         AsyncTask.execute(new Runnable() {
             @Override public void run() {
+                final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                if (prefs.getBoolean(context.getString(R.string.key_publish_notification_bootup), false)) {
+                    NotificationHelper.showPersistentNotification(context);
+                }
+
                 CompatHelper.publishCustomTile(context);
             }
         });

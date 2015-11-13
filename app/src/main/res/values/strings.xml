@@ -39,6 +39,9 @@
 
     <string name="notification">Notification</string>
     <string name="notification_content">Press to open QuickLoader dialog</string>
+    <string name="pref_publish_notification_bootup_title">Publish when booting</string>
+    <string name="pref_publish_notification_bootup_summary">Adds a notification when the device has booted up</string>
+
     <string name="pref_publish_notification_title">Publish notification</string>
     <string name="pref_publish_notification_summary">Adds a notification to quickly access QuickLoader</string>
     <string name="message_published_notification">Added QuickLoader notification!</string>
