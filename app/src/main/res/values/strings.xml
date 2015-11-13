@@ -36,5 +36,15 @@
     <string name="pref_publish_tile_summary">Adds a quick tile for easy and fast access to QuickLoader, in case it is not showing or if you have removed it</string>
     <string name="message_published_tile">Poked the system to add a quick tile!</string>
 
+    <string name="notification">Notification</string>
+    <string name="notification_content">Press to open QuickLoader dialog</string>
+    <string name="pref_publish_notification_title">Publish notification</string>
+    <string name="pref_publish_notification_summary">Adds a notification to quickly access QuickLoader</string>
+    <string name="message_published_notification">Added QuickLoader notification!</string>
+
+    <string name="pref_cancel_notification_title">Cancel notification</string>
+    <string name="pref_cancel_notification_summary">Removes a previously published QuickLoader notification</string>
+    <string name="message_cancel_notification">Removed QuickLoader notification!</string>
+
     <string name="category_general">General</string>
 </resources>

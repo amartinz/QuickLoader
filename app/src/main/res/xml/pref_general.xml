@@ -21,6 +21,19 @@
         android:title="@string/pref_publish_tile_title" />
 
     <PreferenceCategory
+        android:key="cat_notification"
+        android:title="@string/notification">
+        <Preference
+            android:key="@string/key_publish_notification"
+            android:summary="@string/pref_publish_notification_summary"
+            android:title="@string/pref_publish_notification_title" />
+        <Preference
+            android:key="@string/key_cancel_notification"
+            android:summary="@string/pref_cancel_notification_summary"
+            android:title="@string/pref_cancel_notification_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="cat_general"
         android:title="@string/category_general">
         <SwitchPreference

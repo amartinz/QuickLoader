@@ -19,10 +19,14 @@ package alexander.martinz.quickloader;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.support.annotation.StringRes;
 import android.widget.Toast;
 
 public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceClickListener {
     private Preference mPublishTile;
+
+    private Preference mPublishNotif;
+    private Preference mCancelNotif;
 
     private Toast mToast;
 
@@ -36,19 +40,36 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         } else {
             getPreferenceScreen().removePreference(mPublishTile);
         }
+
+        mPublishNotif = findPreference(getString(R.string.key_publish_notification));
+        mPublishNotif.setOnPreferenceClickListener(this);
+
+        mCancelNotif = findPreference(getString(R.string.key_cancel_notification));
+        mCancelNotif.setOnPreferenceClickListener(this);
     }
 
     @Override public boolean onPreferenceClick(Preference preference) {
         if (preference == mPublishTile) {
             CompatHelper.publishCustomTile(this);
-
-            if (mToast != null) {
-                mToast.cancel();
-            }
-            mToast = Toast.makeText(this, getString(R.string.message_published_tile), Toast.LENGTH_SHORT);
-            mToast.show();
+            showToast(R.string.message_published_tile);
+            return true;
+        } else if (preference == mPublishNotif) {
+            NotificationHelper.showPersistentNotification(this);
+            showToast(R.string.message_published_notification);
+            return true;
+        } else if (preference == mCancelNotif) {
+            NotificationHelper.cancelPersistentNotification(this);
+            showToast(R.string.message_cancel_notification);
             return true;
         }
         return false;
+    }
+
+    private void showToast(@StringRes int textResId) {
+        if (mToast != null) {
+            mToast.cancel();
+        }
+        mToast = Toast.makeText(this, getString(textResId), Toast.LENGTH_SHORT);
+        mToast.show();
     }
 }
