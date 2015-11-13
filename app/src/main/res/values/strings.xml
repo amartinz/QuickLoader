@@ -16,15 +16,13 @@
   -->
 
 <resources>
-    <string name="app_name" translatable="false">QuickLoader</string>
-    <string name="test_url" translatable="false">https://goo.gl/aVsley</string>
-    <string name="funny_cat_pic_23" translatable="false">funny_cat_picture_23.png</string>
-
     <string name="download">Download</string>
     <string name="enter_url">Enter URL to file</string>
     <string name="save_file_as">Save file as</string>
     <string name="auto_detect">Auto detect</string>
+    <string name="auto_detect_summary">If enabled, the file name gets auto detected via the entered URL</string>
     <string name="auto_extract">Auto insert URL from clipboard</string>
+    <string name="auto_extract_summary">If enabled, the last URL you copied to your clipboard will get inserted when launching QuickLoader</string>
 
     <string name="please_enter_url">Please enter an URL!</string>
     <string name="filename_must_not_be_empty">Filename must not be empty!</string>
@@ -33,4 +31,10 @@
     <string name="verify_url_message">Please verify that the following URL is valid\n\n%s</string>
 
     <string name="started_download_toast">Started downloading \"%s\"</string>
+
+    <string name="pref_publish_tile_title">Publish quick tile</string>
+    <string name="pref_publish_tile_summary">Adds a quick tile for easy and fast access to QuickLoader, in case it is not showing or if you have removed it</string>
+    <string name="message_published_tile">Poked the system to add a quick tile!</string>
+
+    <string name="category_general">General</string>
 </resources>

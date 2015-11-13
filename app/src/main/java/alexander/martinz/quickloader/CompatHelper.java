@@ -27,8 +27,12 @@ import hugo.weaving.DebugLog;
 public class CompatHelper {
     private static final int CUSTOM_TILE_ID = 197283;
 
+    public static boolean isCmSdkAvailable() {
+        return (Build.CM_VERSION.SDK_INT >= Build.CM_VERSION_CODES.APRICOT);
+    }
+
     @DebugLog public static boolean publishCustomTile(final Context context) {
-        if (Build.CM_VERSION.SDK_INT < Build.CM_VERSION_CODES.APRICOT) {
+        if (!isCmSdkAvailable()) {
             return false;
         }
 

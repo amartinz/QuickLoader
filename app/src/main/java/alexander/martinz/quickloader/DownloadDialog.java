@@ -44,9 +44,6 @@ import android.widget.Toast;
 import hugo.weaving.DebugLog;
 
 public class DownloadDialog extends Activity {
-    private static final String KEY_AUTO_DETECT = "auto_detect";
-    private static final String KEY_AUTO_EXTRACT = "auto_extract";
-
     private AlertDialog mDialog;
 
     private EditText mUrl;
@@ -96,18 +93,19 @@ public class DownloadDialog extends Activity {
                         mUrlTextWatcher.onTextChanged(url, 0, 0, url.length());
                     }
                 }
-                mPreferences.edit().putBoolean(KEY_AUTO_DETECT, checked).apply();
+                mPreferences.edit().putBoolean(getString(R.string.key_auto_detect), checked).apply();
             }
         });
-        mAutoDetect.setChecked(mPreferences.getBoolean(KEY_AUTO_DETECT, true));
+        mAutoDetect.setChecked(mPreferences.getBoolean(getString(R.string.key_auto_detect), true));
 
         final Switch autoExtract = (Switch) v.findViewById(R.id.switch_auto_extract);
+        autoExtract.setChecked(mPreferences.getBoolean(getString(R.string.key_auto_extract), true));
         autoExtract.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if (checked) {
                     extractUrlFromClipboard();
                 }
-                mPreferences.edit().putBoolean(KEY_AUTO_EXTRACT, checked).apply();
+                mPreferences.edit().putBoolean(getString(R.string.key_auto_extract), checked).apply();
             }
         });
 
@@ -191,7 +189,7 @@ public class DownloadDialog extends Activity {
         }
 
         // check if the user has already copied any url and insert it
-        final boolean shouldAutoExtract = mPreferences.getBoolean(KEY_AUTO_EXTRACT, true);
+        final boolean shouldAutoExtract = mPreferences.getBoolean(getString(R.string.key_auto_extract), true);
         if (shouldAutoExtract && mUrl != null && mUrlTextWatcher != null) {
             extractUrlFromClipboard();
         }
