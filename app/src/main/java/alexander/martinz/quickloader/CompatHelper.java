@@ -25,27 +25,31 @@ import cyanogenmod.os.Build;
 import hugo.weaving.DebugLog;
 
 public class CompatHelper {
-    private static final int CUSTOM_TILE_ID = 197283;
+    private static final int CUSTOM_TILE_ID = 19283;
 
     public static boolean isCmSdkAvailable() {
         return (Build.CM_VERSION.SDK_INT >= Build.CM_VERSION_CODES.APRICOT);
     }
 
-    @DebugLog public static boolean publishCustomTile(final Context context) {
+    @DebugLog public static boolean publishCustomTile(Context context) {
         if (!isCmSdkAvailable()) {
             return false;
         }
+        context = context.getApplicationContext();
 
         final Intent tileIntent = new Intent(context, DownloadDialog.class);
         tileIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        final PendingIntent pendingTileIntent =
+                PendingIntent.getActivity(context, 0, tileIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        final PendingIntent pendingTileIntent = PendingIntent.getActivity(context, 0,
-                tileIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        final Intent settingsIntent = new Intent(context, SettingsActivity.class);
+        settingsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         final CustomTile customTile = new CustomTile.Builder(context)
                 .setOnClickIntent(pendingTileIntent)
-                .setContentDescription(R.string.app_name)
+                .setOnSettingsClickIntent(settingsIntent)
                 .setLabel(R.string.app_name)
+                .setContentDescription(R.string.tile_content_description)
                 .setIcon(R.mipmap.ic_launcher)
                 .hasSensitiveData(false)
                 .shouldCollapsePanel(true)

@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 
 public class NotificationHelper {
     private static final int NOTIFICATION_ID = 1972831;
@@ -35,7 +36,7 @@ public class NotificationHelper {
         builder.setContentText(context.getString(R.string.notification_content));
         builder.setSmallIcon(R.drawable.ic_cloud_download_24dp);
         builder.setOngoing(true);
-        builder.setColor(context.getColor(R.color.accent));
+        builder.setColor(ContextCompat.getColor(context, R.color.accent));
         builder.setPriority(NotificationCompat.PRIORITY_MIN);
 
         final Intent intent = new Intent(context, DownloadDialog.class);

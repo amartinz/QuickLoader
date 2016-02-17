@@ -51,4 +51,6 @@
     <string name="message_cancel_notification">Removed QuickLoader notification!</string>
 
     <string name="category_general">General</string>
+
+    <string name="tile_content_description">Adds a quick tile for easy and fast access to QuickLoader</string>
 </resources>
