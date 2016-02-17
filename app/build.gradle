@@ -43,7 +43,7 @@ android {
         applicationId "alexander.martinz.quickloader"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 17
+        versionCode 18
         versionName "1.0.6"
 
         def String localProps = System.getenv('SIGNING_PROP_FILE')
