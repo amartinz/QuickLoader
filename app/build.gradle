@@ -41,10 +41,10 @@ android {
 
     defaultConfig {
         applicationId "alexander.martinz.quickloader"
-        minSdkVersion 22
+        minSdkVersion 21
         targetSdkVersion 23
-        versionCode 16
-        versionName "1.0.5"
+        versionCode 17
+        versionName "1.0.6"
 
         def String localProps = System.getenv('SIGNING_PROP_FILE')
         if (localProps == null) {
