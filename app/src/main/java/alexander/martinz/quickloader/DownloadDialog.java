@@ -213,6 +213,11 @@ public class DownloadDialog extends Activity {
             return;
         }
 
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            showToast(getString(R.string.url_start_with_http), false);
+            return;
+        }
+
         final String name = getText(mFileName);
         if (TextUtils.isEmpty(name)) {
             showToast(getString(R.string.filename_must_not_be_empty), false);
