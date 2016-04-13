@@ -34,7 +34,7 @@ public class NotificationHelper {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setContentTitle(context.getString(R.string.app_name));
         builder.setContentText(context.getString(R.string.notification_content));
-        builder.setSmallIcon(R.drawable.ic_cloud_download_black_24dp);
+        builder.setSmallIcon(R.drawable.ic_cloud_download_white_24dp);
         builder.setOngoing(true);
         builder.setColor(ContextCompat.getColor(context, R.color.accent));
         builder.setPriority(NotificationCompat.PRIORITY_MIN);

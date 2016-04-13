@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/enter_url"
-        android:textColor="?android:colorPrimary"
+        android:textColor="?colorPrimary"
         android:textSize="20sp" />
 
     <LinearLayout
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="@string/save_file_as"
-        android:textColor="?android:colorPrimary"
+        android:textColor="?colorPrimary"
         android:textSize="20sp" />
 
     <LinearLayout

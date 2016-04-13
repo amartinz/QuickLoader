@@ -17,24 +17,11 @@
 
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
-        <item name="android:colorAccent">@color/accent</item>
-        <item name="android:colorPrimary">@color/primary</item>
-        <item name="android:colorPrimaryDark">@color/primary_dark</item>
+    <style name="AppTheme" parent="AppTheme.Base">
+        <!-- Customize your theme here. -->
     </style>
 
-    <style name="CustomDialog" parent="android:Theme.Material.Light.Dialog">
-        <item name="android:colorAccent">@color/accent</item>
-        <item name="android:colorPrimary">@color/primary</item>
-        <item name="android:colorPrimaryDark">@color/primary_dark</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:backgroundDimEnabled">true</item>
-    </style>
-
-    <style name="Button.Raised" parent="android:style/Widget.Material.Button">
+    <style name="Button.Raised" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="android:background">@drawable/raised_button</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
