@@ -22,6 +22,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
+import alexander.martinz.quickloader.tiles.TilePublisher;
+
 public class BootupReceiver extends BroadcastReceiver {
     public BootupReceiver() { }
 
@@ -33,7 +35,7 @@ public class BootupReceiver extends BroadcastReceiver {
                     NotificationHelper.showPersistentNotification(context);
                 }
 
-                CompatHelper.publishCustomTile(context);
+                TilePublisher.publishCustomTile(context);
             }
         });
     }

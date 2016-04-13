@@ -20,6 +20,11 @@
         android:summary="@string/pref_publish_tile_summary"
         android:title="@string/pref_publish_tile_title" />
 
+    <Preference
+        android:key="@string/key_publish_tile_n"
+        android:summary="@string/pref_publish_tile_n_summary"
+        android:title="@string/pref_publish_tile_n_title" />
+
     <PreferenceCategory
         android:key="cat_notification"
         android:title="@string/notification">

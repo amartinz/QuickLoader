@@ -64,6 +64,12 @@ android {
         }
     }
 
+    productFlavors {
+        // TODO: remove once N sdk is final
+        normal {}
+        preview {}
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7

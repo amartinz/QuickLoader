@@ -16,14 +16,18 @@
 
 package alexander.martinz.quickloader;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.annotation.StringRes;
 import android.widget.Toast;
 
+import alexander.martinz.quickloader.tiles.TilePublisher;
+
 public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceClickListener {
     private Preference mPublishTile;
+    private Preference mPublishTileN;
 
     private Preference mPublishNotif;
     private Preference mCancelNotif;
@@ -35,10 +39,15 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         addPreferencesFromResource(R.xml.pref_general);
 
         mPublishTile = findPreference(getString(R.string.key_publish_tile));
-        if (CompatHelper.isCmSdkAvailable()) {
+        if (TilePublisher.isCmSdkAvailable()) {
             mPublishTile.setOnPreferenceClickListener(this);
         } else {
             getPreferenceScreen().removePreference(mPublishTile);
+        }
+
+        mPublishTileN = findPreference(getString(R.string.key_publish_tile_n));
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+            getPreferenceScreen().removePreference(mPublishTileN);
         }
 
         mPublishNotif = findPreference(getString(R.string.key_publish_notification));
@@ -50,7 +59,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
 
     @Override public boolean onPreferenceClick(Preference preference) {
         if (preference == mPublishTile) {
-            CompatHelper.publishCustomTile(this);
+            TilePublisher.publishCustomTile(this);
             showToast(R.string.message_published_tile);
             return true;
         } else if (preference == mPublishNotif) {

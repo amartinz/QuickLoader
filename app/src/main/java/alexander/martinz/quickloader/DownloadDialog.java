@@ -46,6 +46,7 @@ import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import alexander.martinz.quickloader.tiles.TilePublisher;
 import hugo.weaving.DebugLog;
 import rx.functions.Action1;
 
@@ -160,7 +161,7 @@ public class DownloadDialog extends Activity {
 
         AsyncTask.execute(new Runnable() {
             @Override public void run() {
-                CompatHelper.publishCustomTile(DownloadDialog.this);
+                TilePublisher.publishCustomTile(DownloadDialog.this);
             }
         });
     }

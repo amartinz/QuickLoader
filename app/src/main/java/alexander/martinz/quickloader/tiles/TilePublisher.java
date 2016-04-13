@@ -13,18 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package alexander.martinz.quickloader;
+package alexander.martinz.quickloader.tiles;
 
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import alexander.martinz.quickloader.DownloadDialog;
+import alexander.martinz.quickloader.R;
+import alexander.martinz.quickloader.SettingsActivity;
 import cyanogenmod.app.CMStatusBarManager;
 import cyanogenmod.app.CustomTile;
 import cyanogenmod.os.Build;
 import hugo.weaving.DebugLog;
 
-public class CompatHelper {
+public class TilePublisher {
     private static final int CUSTOM_TILE_ID = 19283;
 
     public static boolean isCmSdkAvailable() {
@@ -50,7 +53,7 @@ public class CompatHelper {
                 .setOnSettingsClickIntent(settingsIntent)
                 .setLabel(R.string.app_name)
                 .setContentDescription(R.string.tile_content_description)
-                .setIcon(R.mipmap.ic_launcher)
+                .setIcon(R.drawable.ic_cloud_download_white_24dp)
                 .hasSensitiveData(false)
                 .shouldCollapsePanel(true)
                 .build();
