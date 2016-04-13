@@ -16,6 +16,7 @@
 
 package alexander.martinz.quickloader;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,6 +32,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -42,7 +44,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tbruyelle.rxpermissions.RxPermissions;
+
 import hugo.weaving.DebugLog;
+import rx.functions.Action1;
 
 public class DownloadDialog extends Activity {
     private AlertDialog mDialog;
@@ -87,7 +92,7 @@ public class DownloadDialog extends Activity {
         mAutoDetect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 mFileName.setEnabled(!checked);
-                if (mUrl != null && mUrlTextWatcher != null) {
+                if (mUrl != null) {
                     final Editable urlEditable = mUrl.getText();
                     final String url = ((urlEditable != null) ? urlEditable.toString() : null);
                     if (!TextUtils.isEmpty(url)) {
@@ -120,41 +125,11 @@ public class DownloadDialog extends Activity {
         final Button startDownload = (Button) v.findViewById(R.id.start_download);
         startDownload.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
-                final String url = getText(mUrl);
-                if (TextUtils.isEmpty(url)) {
-                    showToast(getString(R.string.please_enter_url), false);
+                if (!checkStoragePermission()) {
                     return;
                 }
 
-                final String name = getText(mFileName);
-                if (TextUtils.isEmpty(name)) {
-                    showToast(getString(R.string.filename_must_not_be_empty), false);
-                    return;
-                }
-
-                final String fileName = name.replace(" ", "_");
-
-                final AlertDialog.Builder builder = new AlertDialog.Builder(DownloadDialog.this);
-                builder.setTitle(R.string.verify_url_title)
-                        .setMessage(getString(R.string.verify_url_message, url))
-                        .setNegativeButton(android.R.string.cancel,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                })
-                        .setPositiveButton(android.R.string.ok,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        startDownload(url, fileName, mDialog);
-                                        dialogInterface.dismiss();
-                                    }
-                                });
-
-                final AlertDialog dialog = builder.create();
-                dialog.show();
+                showDownloadDialog();
             }
         });
 
@@ -199,9 +174,72 @@ public class DownloadDialog extends Activity {
 
         // check if the user has already copied any url and insert it
         final boolean shouldAutoExtract = mPreferences.getBoolean(getString(R.string.key_auto_extract), true);
-        if (shouldAutoExtract && mUrl != null && mUrlTextWatcher != null) {
+        if (shouldAutoExtract && mUrl != null) {
             extractUrlFromClipboard();
         }
+    }
+
+    private boolean checkStoragePermission() {
+        final RxPermissions rxPermissions = RxPermissions.getInstance(DownloadDialog.this);
+        if (!rxPermissions.isGranted(Manifest.permission.READ_EXTERNAL_STORAGE) ||
+            !rxPermissions.isGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .subscribe(new Action1<Boolean>() {
+                        @Override public void call(Boolean granted) {
+                            if (granted) {
+                                showDownloadDialog();
+                            } else {
+                                showToast(getString(R.string.toast_permission_grant), true);
+
+                                final Uri settingsUri = Uri.parse(String.format("package:%s", getPackageName()));
+                                final Intent i = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, settingsUri);
+                                i.addCategory(Intent.CATEGORY_DEFAULT);
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                try {
+                                    startActivity(i);
+                                } catch (Exception ignored) { }
+                            }
+                        }
+                    });
+            return false;
+        }
+        return true;
+    }
+
+    private void showDownloadDialog() {
+        final String url = getText(mUrl);
+        if (TextUtils.isEmpty(url)) {
+            showToast(getString(R.string.please_enter_url), false);
+            return;
+        }
+
+        final String name = getText(mFileName);
+        if (TextUtils.isEmpty(name)) {
+            showToast(getString(R.string.filename_must_not_be_empty), false);
+            return;
+        }
+
+        final String fileName = name.replace(" ", "_");
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(DownloadDialog.this);
+        builder.setTitle(R.string.verify_url_title)
+                .setMessage(getString(R.string.verify_url_message, url))
+                .setNegativeButton(android.R.string.cancel,
+                        new DialogInterface.OnClickListener() {
+                            @Override public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                .setPositiveButton(android.R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            @Override public void onClick(DialogInterface dialogInterface, int i) {
+                                startDownload(url, fileName, mDialog);
+                                dialogInterface.dismiss();
+                            }
+                        });
+
+        final AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private boolean extractUrlFromClipboard() {
