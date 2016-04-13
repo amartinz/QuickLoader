@@ -79,3 +79,6 @@
 
 # CyanogenMod
 -dontwarn cyanogenmod.**
+
+# RxAndroid
+-dontwarn rx.internal.util.**
