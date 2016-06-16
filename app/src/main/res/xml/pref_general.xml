@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2015 Alexander Martinz
+  ~ Copyright 2015 - 2016 Alexander Martinz
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -49,17 +49,17 @@
         android:title="@string/category_general">
         <SwitchPreference
             android:defaultValue="true"
-            android:key="@string/key_auto_detect"
-            android:persistent="true"
-            android:summary="@string/auto_detect_summary"
-            android:title="@string/auto_detect" />
-
-        <SwitchPreference
-            android:defaultValue="true"
             android:key="@string/key_auto_extract"
             android:persistent="true"
             android:summary="@string/auto_extract_summary"
             android:title="@string/auto_extract" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/key_auto_detect"
+            android:persistent="true"
+            android:summary="@string/auto_detect_summary"
+            android:title="@string/auto_detect" />
     </PreferenceCategory>
 
 </PreferenceScreen>
