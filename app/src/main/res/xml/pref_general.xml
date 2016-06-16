@@ -22,8 +22,8 @@
 
     <Preference
         android:key="@string/key_publish_tile_n"
-        android:summary="@string/pref_publish_tile_n_summary"
-        android:title="@string/pref_publish_tile_n_title" />
+        android:summary="@string/pref_publish_tile_summary_n"
+        android:title="@string/pref_publish_tile_title" />
 
     <PreferenceCategory
         android:key="cat_notification"

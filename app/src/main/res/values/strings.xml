@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2015 Alexander Martinz
+  ~ Copyright 2015 - 2016 Alexander Martinz
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -34,11 +34,10 @@
 
     <string name="started_download_toast">Started downloading \"%s\"</string>
 
-    <string name="pref_publish_tile_title">Publish quick tile</string>
-    <string name="pref_publish_tile_n_title">Add quick tile</string>
-    <string name="pref_publish_tile_summary">Adds a quick tile for easy and fast access to QuickLoader, in case it is not showing or if you have removed it</string>
-    <string name="pref_publish_tile_n_summary">Go to your quick tile settings and add QuickLoader</string>
-    <string name="message_published_tile">Poked the system to add a quick tile!</string>
+    <string name="pref_publish_tile_title">Add quick tile</string>
+    <string name="pref_publish_tile_summary">Adds a quick tile for easy and fast access to QuickLoader</string>
+    <string name="pref_publish_tile_summary_n">Go to your quick tile settings and add QuickLoader</string>
+    <string name="message_published_tile">Added quick tile!</string>
 
     <string name="notification">Notification</string>
     <string name="notification_content">Press to open QuickLoader dialog</string>
@@ -54,8 +53,6 @@
     <string name="message_cancel_notification">Removed QuickLoader notification!</string>
 
     <string name="category_general">General</string>
-
-    <string name="tile_content_description">Adds a quick tile for easy and fast access to QuickLoader</string>
 
     <string name="toast_permission_grant">Need to grant storage permission to download!</string>
 </resources>

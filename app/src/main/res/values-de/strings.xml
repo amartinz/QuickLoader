@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 - 2016 Alexander Martinz
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <string name="configure">Konfigurieren</string>
+    <string name="download">Download</string>
+    <string name="enter_url">URL zur Datei eingeben</string>
+    <string name="save_file_as">Speichere Datei als</string>
+    <string name="auto_detect">Automatisch erkennen</string>
+    <string name="auto_detect_summary">Erkennt den Dateinamen anhand der eingegebenen URL</string>
+    <string name="auto_extract">Automatisch URL einfügen</string>
+    <string name="auto_extract_summary">Die letzte kopierte URL wird von der Zwischenablage eingefügt</string>
+
+    <string name="please_enter_url">Bitte gib eine URL ein!</string>
+    <string name="filename_must_not_be_empty">Der Dateiname darf nicht leer sein!</string>
+    <string name="url_start_with_http">URL muss mit \"http\" oder \"https\" anfangen!</string>
+
+    <string name="verify_url_title">Überprüfe URL</string>
+    <string name="verify_url_message">Bitte überprüfe, ob die folgende URL richtig ist\n\n%s</string>
+
+    <string name="started_download_toast">Download von \"%s\" gestartet!</string>
+
+    <string name="pref_publish_tile_title">QuickTile hinzufügen</string>
+    <string name="pref_publish_tile_summary">Fügt ein QuickTile von QuickLoader hinzu, für leichten und schnellen Zugriff</string>
+    <string name="pref_publish_tile_summary_n">Gehe zu den QuickTile Einstellungen und füge QuickLoader hinzu</string>
+    <string name="message_published_tile">QuickTile wurde hinzugefügt!</string>
+
+    <string name="notification">Benachrichtigung</string>
+    <string name="notification_content">Drücke um QuickLoader zu öffnen</string>
+    <string name="pref_publish_notification_bootup_title">Beim Starten</string>
+    <string name="pref_publish_notification_bootup_summary">Erstellt eine Benachrichtigung, wenn das Gerät startet</string>
+
+    <string name="pref_publish_notification_title">Erstelle Benachrichtigung</string>
+    <string name="pref_publish_notification_summary">Erstellt eine Benachrichtigung, um QuickLoader schnell zu öffnen</string>
+    <string name="message_published_notification">QuickLoader Benachrichtigung hinzugefügt!</string>
+
+    <string name="pref_cancel_notification_title">Entferne Benachrichtigung</string>
+    <string name="pref_cancel_notification_summary">Entfernt eine zuvor erstellte QuickLoader Benachrichtigung</string>
+    <string name="message_cancel_notification">QuickLoader Benachrichtigung entfernt!</string>
+
+    <string name="category_general">Allgemein</string>
+
+    <string name="toast_permission_grant">Speicher-Berechtigung erforderlich zum Downloaden!</string>
+</resources>

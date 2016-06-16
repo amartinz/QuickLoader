@@ -27,4 +27,7 @@
     <string name="key_publish_notification" translatable="false">publish_notification</string>
     <string name="key_publish_notification_bootup" translatable="false">publish_notification_bootup</string>
     <string name="key_cancel_notification" translatable="false">cancel_notification</string>
+
+    <string name="tile_content_description" translatable="false">@string/pref_publish_tile_summary</string>
+
 </resources>
