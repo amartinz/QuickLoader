@@ -27,8 +27,7 @@ public class AwesomeTileService extends TileService {
     public AwesomeTileService() { }
 
     @Override public void onClick() {
-        final Intent tileIntent = new Intent(this, DownloadDialog.class);
-        tileIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        final Intent tileIntent = DownloadDialog.createIntent(getApplicationContext());
         startActivityAndCollapse(tileIntent);
     }
 }

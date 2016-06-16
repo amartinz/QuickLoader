@@ -20,6 +20,7 @@
     <string name="test_url" translatable="false">https://goo.gl/aVsley</string>
     <string name="funny_cat_pic_23" translatable="false">funny_cat_picture_23.png</string>
 
+    <string name="key_open_quickloader" translatable="false">open_quickloader</string>
     <string name="key_auto_detect" translatable="false">auto_detect</string>
     <string name="key_auto_extract" translatable="false">auto_extract</string>
     <string name="key_publish_tile" translatable="false">publish_tile</string>

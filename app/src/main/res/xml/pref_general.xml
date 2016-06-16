@@ -16,6 +16,10 @@
   -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <Preference
+        android:key="@string/key_open_quickloader"
+        android:title="@string/pref_open_quickloader" />
+
+    <Preference
         android:key="@string/key_publish_tile"
         android:summary="@string/pref_publish_tile_summary"
         android:title="@string/pref_publish_tile_title" />

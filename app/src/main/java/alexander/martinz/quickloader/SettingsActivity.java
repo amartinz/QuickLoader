@@ -16,6 +16,8 @@
 
 package alexander.martinz.quickloader;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -38,6 +40,8 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public static final class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
+        private Preference mOpenQuickLoader;
+
         private Preference mPublishTile;
         private Preference mPublishTileN;
 
@@ -49,6 +53,9 @@ public class SettingsActivity extends AppCompatActivity {
         @Override public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
+
+            mOpenQuickLoader = findPreference(getString(R.string.key_open_quickloader));
+            mOpenQuickLoader.setOnPreferenceClickListener(this);
 
             mPublishTile = findPreference(getString(R.string.key_publish_tile));
             if (TilePublisher.isCmSdkAvailable()) {
@@ -70,7 +77,12 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         @Override public boolean onPreferenceClick(Preference preference) {
-            if (preference == mPublishTile) {
+            if (preference == mOpenQuickLoader) {
+                final Context context = getActivity().getApplicationContext();
+                final Intent intent = DownloadDialog.createIntent(context);
+                startActivity(intent);
+                return true;
+            } else if (preference == mPublishTile) {
                 TilePublisher.publishCustomTile(getActivity());
                 showToast(R.string.message_published_tile);
                 return true;

@@ -79,6 +79,12 @@ public class DownloadDialog extends Activity {
         @Override public void afterTextChanged(Editable editable) { }
     };
 
+    public static Intent createIntent(Context context) {
+        final Intent intent = new Intent(context, DownloadDialog.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intent;
+    }
+
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         @SuppressLint("InflateParams") final View v = getLayoutInflater().inflate(R.layout.dialog_download, null, false);
