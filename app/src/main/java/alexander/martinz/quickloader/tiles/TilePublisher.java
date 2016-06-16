@@ -31,6 +31,10 @@ public class TilePublisher {
     private static final int CUSTOM_TILE_ID = 19283;
 
     public static boolean isCmSdkAvailable() {
+        // Android N offers custom tiles via another approach
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            return false;
+        }
         return (Build.CM_VERSION.SDK_INT >= Build.CM_VERSION_CODES.APRICOT);
     }
 
