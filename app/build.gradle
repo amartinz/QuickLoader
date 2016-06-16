@@ -42,7 +42,7 @@ android {
         applicationId "alexander.martinz.quickloader"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 21
+        versionCode 22
         versionName '1.1.0'
 
         def String gitRevision = getGitCommitHash()
