@@ -41,7 +41,8 @@ android {
 
     defaultConfig {
         applicationId "alexander.martinz.quickloader"
-        minSdkVersion 15
+        // https://twitter.com/minsdkversion
+        minSdkVersion 16
         targetSdkVersion 24
         versionCode 22
         versionName '1.1.0'
