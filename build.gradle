@@ -22,7 +22,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:2.2.0'
         classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
 
         classpath 'io.fabric.tools:gradle:1.21.5'
@@ -57,7 +57,8 @@ def getGitCommitHash() {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.14'
+    gradleVersion = '3.1'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
 }
 
 task clean(type: Delete) {

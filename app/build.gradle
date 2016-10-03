@@ -20,7 +20,7 @@ apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.2"
 
     signingConfigs {
         release {
@@ -70,17 +70,17 @@ android {
 }
 
 dependencies {
-    compile 'org.cyanogenmod:platform.sdk:5.0.1'
-    compile 'com.android.support:appcompat-v7:24.0.0'
+    compile 'org.cyanogenmod:platform.sdk:6.0'
+    compile 'com.android.support:appcompat-v7:24.2.1'
 
     // see https://github.com/Evisceration/UniversalDebug
     compile 'at.amartinz:universal-debug:1.0.0'
     compile 'at.amartinz:universal-debug-fabric:1.0.0'
 
     // see https://github.com/ReactiveX/RxJava
-    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxjava:1.1.10'
     // see https://github.com/ReactiveX/RxAndroid
-    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'io.reactivex:rxandroid:1.2.1'
     // see https://github.com/tbruyelle/RxPermissions
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
 }
