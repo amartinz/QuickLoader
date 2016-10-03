@@ -13,21 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package alexander.martinz.quickloader.tiles;
+package alexander.martinz.quickloader.tiles
 
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.os.Build;
-import android.service.quicksettings.TileService;
+import android.annotation.TargetApi
+import android.os.Build
+import android.service.quicksettings.TileService
 
-import alexander.martinz.quickloader.DownloadDialog;
+import alexander.martinz.quickloader.DownloadDialog
 
 @TargetApi(Build.VERSION_CODES.N)
-public class AwesomeTileService extends TileService {
-    public AwesomeTileService() { }
-
-    @Override public void onClick() {
-        final Intent tileIntent = DownloadDialog.createIntent(getApplicationContext());
-        startActivityAndCollapse(tileIntent);
+class AwesomeTileService : TileService() {
+    override fun onClick() {
+        val tileIntent = DownloadDialog.createIntent(applicationContext)
+        startActivityAndCollapse(tileIntent)
     }
 }

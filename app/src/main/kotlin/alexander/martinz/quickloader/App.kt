@@ -13,29 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package alexander.martinz.quickloader;
+package alexander.martinz.quickloader
 
-import android.app.Application;
+import android.app.Application
 
-import at.amartinz.universaldebug.UniversalDebug;
-import at.amartinz.universaldebug.fabric.FabricConfig;
+import at.amartinz.universaldebug.UniversalDebug
+import at.amartinz.universaldebug.fabric.FabricConfig
 
-public class App extends Application {
-    @Override public void onCreate() {
-        super.onCreate();
+class App : Application() {
+    override fun onCreate() {
+        super.onCreate()
 
-        final UniversalDebug universalDebug = new UniversalDebug(this)
-                .withDebug(BuildConfig.DEBUG)
-                .withTimber(false);
+        val universalDebug = UniversalDebug(this).withDebug(BuildConfig.DEBUG).withTimber(false)
 
         // disable when developing
         if (!BuildConfig.DEBUG) {
-            final FabricConfig fabricConfig = new FabricConfig(universalDebug)
+            val fabricConfig = FabricConfig(universalDebug)
                     .withAnswers()
-                    .withCrashlytics();
-            universalDebug.withExtension(fabricConfig);
+                    .withCrashlytics()
+            universalDebug.withExtension(fabricConfig)
         }
 
-        universalDebug.install();
+        universalDebug.install()
     }
 }
