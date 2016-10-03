@@ -17,9 +17,25 @@ package alexander.martinz.quickloader
 
 import android.content.ClipboardManager
 import android.text.TextUtils
+import android.util.Patterns
 import hugo.weaving.DebugLog
 
 object Clipboarder {
+    fun isValidUrl(url: String?) : Boolean {
+        if (url == null || url.isBlank()) {
+            return false
+        }
+
+        if (!Patterns.WEB_URL.matcher(url).matches()) {
+            return false
+        }
+
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            return false
+        }
+        return true
+    }
+
     @DebugLog fun getUrlFromClipboard(clipboardManager: ClipboardManager): String? {
         if (!clipboardManager.hasPrimaryClip()) {
             return null

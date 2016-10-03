@@ -21,90 +21,83 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layout_et_download_url"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/enter_url"
-        android:textColor="?colorPrimary"
-        android:textSize="20sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/et_download_url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/test_url"
+            android:hint="@string/enter_url"
             android:inputType="textUri"
             android:maxLength="5000" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Switch
-                android:id="@+id/switch_auto_extract"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true" />
-
-            <TextView
-                android:id="@+id/tv_auto_extract"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:clickable="true"
-                android:text="@string/auto_extract" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="@string/save_file_as"
-        android:textColor="?colorPrimary"
-        android:textSize="20sp" />
+    </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+
+        <Switch
+            android:id="@+id/switch_auto_extract"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true" />
+
+        <TextView
+            android:id="@+id/tv_auto_extract"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:clickable="true"
+            android:text="@string/auto_extract" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layout_et_download_file_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/et_download_file_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:hint="@string/funny_cat_pic_23"
+            android:hint="@string/save_file_as"
             android:inputType="text" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Switch
+            android:id="@+id/switch_auto_detect"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:checked="true" />
 
-            <Switch
-                android:id="@+id/switch_auto_detect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true" />
-
-            <TextView
-                android:id="@+id/tv_auto_detect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:clickable="true"
-                android:text="@string/auto_detect" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_auto_detect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:clickable="true"
+            android:text="@string/auto_detect" />
     </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

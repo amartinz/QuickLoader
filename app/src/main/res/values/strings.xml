@@ -25,9 +25,8 @@
     <string name="auto_extract">Auto insert URL from clipboard</string>
     <string name="auto_extract_summary">If enabled, the last URL you copied to your clipboard will get inserted when launching QuickLoader</string>
 
-    <string name="please_enter_url">Please enter an URL!</string>
     <string name="filename_must_not_be_empty">Filename must not be empty!</string>
-    <string name="url_start_with_http">URL must start with \"http\" or \"https\"!</string>
+    <string name="url_not_valid">URL is not valid!</string>
 
     <string name="started_download_toast">Started downloading \"%s\"</string>
 

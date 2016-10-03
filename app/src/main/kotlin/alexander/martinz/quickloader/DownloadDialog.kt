@@ -30,9 +30,11 @@ import android.os.Bundle
 import android.os.Environment
 import android.preference.PreferenceManager
 import android.provider.Settings
+import android.support.design.widget.TextInputLayout
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Patterns
 import android.view.View
 import android.widget.*
 import com.tbruyelle.rxpermissions.RxPermissions
@@ -40,26 +42,60 @@ import com.tbruyelle.rxpermissions.RxPermissions
 class DownloadDialog : Activity() {
     private var mDialog: AlertDialog? = null
 
+    private var mUrlLayout: TextInputLayout? = null
     private var mUrl: EditText? = null
+    private var mFileNameLayout: TextInputLayout? = null
     private var mFileName: EditText? = null
     private var mAutoDetect: Switch? = null
+    private var mStartDownload: Button? = null
 
     private var mToast: Toast? = null
+
+    private enum class CheckType {
+        ALL,
+        URL,
+        FILENAME
+    }
 
     private val mUrlTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(cs: CharSequence, i: Int, i1: Int, i2: Int) {
         }
 
         override fun onTextChanged(charSequence: CharSequence?, i: Int, i1: Int, i2: Int) {
+            val downloadPair = checkDownloadValid(CheckType.URL)
+            val url = downloadPair.first
+
+            // if url is not valid, we are done here
+            if (downloadPair.first == null) {
+                return
+            }
+
             if (mAutoDetect == null || !mAutoDetect!!.isChecked) {
                 return
             }
 
-            val name = charSequence?.toString()
-            val finalName = Clipboarder.extractFilename(name)
+            val finalName = Clipboarder.extractFilename(url)
             if (finalName != null) {
                 mFileName?.setText(finalName)
             }
+        }
+
+        override fun afterTextChanged(editable: Editable) {
+        }
+    }
+
+    private val mFileNameTextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(cs: CharSequence, i: Int, i1: Int, i2: Int) {
+        }
+
+        override fun onTextChanged(charSequence: CharSequence?, i: Int, i1: Int, i2: Int) {
+            val name = getText(mFileName)
+            var error: String? = null
+            if (name == null || name.isBlank()) {
+                error = getString(R.string.filename_must_not_be_empty)
+            }
+            mFileNameLayout?.error = error
+            checkDownloadValid(CheckType.FILENAME)
         }
 
         override fun afterTextChanged(editable: Editable) {
@@ -78,9 +114,13 @@ class DownloadDialog : Activity() {
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
 
+        mUrlLayout = v.findViewById(R.id.layout_et_download_url) as TextInputLayout
         mUrl = v.findViewById(R.id.et_download_url) as EditText
         mUrl?.addTextChangedListener(mUrlTextWatcher)
+
+        mFileNameLayout = v.findViewById(R.id.layout_et_download_file_name) as TextInputLayout
         mFileName = v.findViewById(R.id.et_download_file_name) as EditText
+        mFileName?.addTextChangedListener(mFileNameTextWatcher)
 
         mAutoDetect = v.findViewById(R.id.switch_auto_detect) as Switch
         mAutoDetect?.setOnCheckedChangeListener { compoundButton, checked ->
@@ -109,8 +149,9 @@ class DownloadDialog : Activity() {
         val tvAutoDetect = v.findViewById(R.id.tv_auto_detect) as TextView
         tvAutoDetect.setOnClickListener { mAutoDetect?.toggle() }
 
-        val startDownload = v.findViewById(R.id.start_download) as Button
-        startDownload.setOnClickListener(View.OnClickListener {
+        mStartDownload = v.findViewById(R.id.start_download) as Button
+        mStartDownload?.isEnabled = false
+        mStartDownload?.setOnClickListener(View.OnClickListener {
             if (!checkStoragePermission()) {
                 return@OnClickListener
             }
@@ -176,25 +217,48 @@ class DownloadDialog : Activity() {
         return true
     }
 
+    private fun checkDownloadValid(checkType: CheckType) : Pair<String?, String?> {
+        var pairUrl: String? = null
+        var pairName: String? = null
+
+        if (checkType == CheckType.ALL || checkType == CheckType.URL) {
+            val url: String = getText(mUrl) ?: ""
+            if (Clipboarder.isValidUrl(url)) {
+                mUrlLayout?.error = null
+                pairUrl = url
+            } else {
+                mUrlLayout?.error = getString(R.string.url_not_valid)
+                pairUrl = null
+            }
+        }
+
+        if (checkType == CheckType.ALL || checkType == CheckType.FILENAME) {
+            val name = getText(mFileName)
+            if (name == null || name.isBlank()) {
+                mFileNameLayout?.error = getString(R.string.filename_must_not_be_empty)
+                pairName = null
+            } else {
+                mFileNameLayout?.error = null
+                pairName = name
+            }
+        }
+
+        val urlError = mUrlLayout?.error ?: null
+        val fileNameError = mFileNameLayout?.error ?: null
+        mStartDownload?.isEnabled = ((urlError == null) && (fileNameError == null))
+
+        return Pair(pairUrl, pairName)
+    }
+
     private fun prepareDownload() {
-        val url = getText(mUrl)
-        if (url == null || TextUtils.isEmpty(url)) {
-            showToast(getString(R.string.please_enter_url), false)
+        val downloadPair = checkDownloadValid(CheckType.ALL)
+        val url = downloadPair.first
+        val name = downloadPair.second
+        if (url == null || name == null) {
             return
         }
 
-        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            showToast(getString(R.string.url_start_with_http), false)
-            return
-        }
-
-        val name = getText(mFileName)
-        if (TextUtils.isEmpty(name)) {
-            showToast(getString(R.string.filename_must_not_be_empty), false)
-            return
-        }
-
-        val fileName = name?.replace(" ", "_") ?: ""
+        val fileName = name.replace(" ", "_")
         startDownload(url, fileName, mDialog)
     }
 
@@ -203,6 +267,7 @@ class DownloadDialog : Activity() {
         val urlFromClipboard = Clipboarder.getUrlFromClipboard(clipboardManager)
         if (urlFromClipboard != null && !urlFromClipboard.isBlank()) {
             mUrl?.setText(urlFromClipboard)
+            mUrlLayout?.error = null
             mUrlTextWatcher.onTextChanged(urlFromClipboard, 0, 0, urlFromClipboard.length)
             return true
         }

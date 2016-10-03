@@ -25,9 +25,8 @@
     <string name="auto_extract">Automatisch URL einfügen</string>
     <string name="auto_extract_summary">Die letzte kopierte URL wird von der Zwischenablage eingefügt</string>
 
-    <string name="please_enter_url">Bitte gib eine URL ein!</string>
     <string name="filename_must_not_be_empty">Der Dateiname darf nicht leer sein!</string>
-    <string name="url_start_with_http">URL muss mit \"http\" oder \"https\" anfangen!</string>
+    <string name="url_not_valid">URL ungültig!</string>
 
     <string name="started_download_toast">Download von \"%s\" gestartet!</string>
 

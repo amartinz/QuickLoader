@@ -80,6 +80,7 @@ dependencies {
 
     compile 'org.cyanogenmod:platform.sdk:6.0'
     compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:design:24.2.1'
 
     // see https://github.com/Evisceration/UniversalDebug
     compile 'at.amartinz:universal-debug:1.0.0'
