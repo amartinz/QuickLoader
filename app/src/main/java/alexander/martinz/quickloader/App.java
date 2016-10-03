@@ -28,10 +28,13 @@ public class App extends Application {
                 .withDebug(BuildConfig.DEBUG)
                 .withTimber(false);
 
-        final FabricConfig fabricConfig = new FabricConfig(universalDebug)
-                .withAnswers()
-                .withCrashlytics();
-        universalDebug.withExtension(fabricConfig);
+        // disable when developing
+        if (!BuildConfig.DEBUG) {
+            final FabricConfig fabricConfig = new FabricConfig(universalDebug)
+                    .withAnswers()
+                    .withCrashlytics();
+            universalDebug.withExtension(fabricConfig);
+        }
 
         universalDebug.install();
     }
