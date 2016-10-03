@@ -29,9 +29,6 @@
     <string name="filename_must_not_be_empty">Filename must not be empty!</string>
     <string name="url_start_with_http">URL must start with \"http\" or \"https\"!</string>
 
-    <string name="verify_url_title">Verify URL</string>
-    <string name="verify_url_message">Please verify that the following URL is valid\n\n%s</string>
-
     <string name="started_download_toast">Started downloading \"%s\"</string>
 
     <string name="pref_open_quickloader">Open QuickLoader</string>

@@ -36,7 +36,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import com.tbruyelle.rxpermissions.RxPermissions
-import hugo.weaving.DebugLog
 
 class DownloadDialog : Activity() {
     private var mDialog: AlertDialog? = null
@@ -57,14 +56,20 @@ class DownloadDialog : Activity() {
             }
 
             val name = charSequence?.toString()
-            val finalName = extractFilename(name)
+            val finalName = Clipboarder.extractFilename(name)
             if (finalName != null) {
-                mFileName!!.setText(finalName)
+                mFileName?.setText(finalName)
             }
         }
 
         override fun afterTextChanged(editable: Editable) {
         }
+    }
+
+    override fun onDestroy() {
+        mDialog?.dismiss()
+
+        super.onDestroy()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,7 +115,7 @@ class DownloadDialog : Activity() {
                 return@OnClickListener
             }
 
-            showDownloadDialog()
+            prepareDownload()
         })
 
         val configure = v.findViewById(R.id.configure) as Button
@@ -148,29 +153,30 @@ class DownloadDialog : Activity() {
     private fun checkStoragePermission(): Boolean {
         val rxPermissions = RxPermissions.getInstance(this@DownloadDialog)
         if (!rxPermissions.isGranted(Manifest.permission.READ_EXTERNAL_STORAGE) || !rxPermissions.isGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe { granted ->
-                if (granted!!) {
-                    showDownloadDialog()
-                } else {
-                    showToast(getString(R.string.toast_permission_grant), true)
+            rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .subscribe { granted ->
+                        if (granted) {
+                            prepareDownload()
+                        } else {
+                            showToast(getString(R.string.toast_permission_grant), true)
 
-                    val settingsUri = Uri.parse(String.format("package:%s", packageName))
-                    val i = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, settingsUri)
-                    i.addCategory(Intent.CATEGORY_DEFAULT)
-                    i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    try {
-                        startActivity(i)
-                    } catch (ignored: Exception) {
+                            val settingsUri = Uri.parse(String.format("package:%s", packageName))
+                            val i = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, settingsUri)
+                            i.addCategory(Intent.CATEGORY_DEFAULT)
+                            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            try {
+                                startActivity(i)
+                            } catch (ignored: Exception) {
+
+                            }
+                        }
                     }
-
-                }
-            }
             return false
         }
         return true
     }
 
-    private fun showDownloadDialog() {
+    private fun prepareDownload() {
         val url = getText(mUrl)
         if (url == null || TextUtils.isEmpty(url)) {
             showToast(getString(R.string.please_enter_url), false)
@@ -189,24 +195,13 @@ class DownloadDialog : Activity() {
         }
 
         val fileName = name?.replace(" ", "_") ?: ""
-
-        val builder = AlertDialog.Builder(this@DownloadDialog)
-        builder
-                .setTitle(R.string.verify_url_title)
-                .setMessage(getString(R.string.verify_url_message, url))
-                .setNegativeButton(android.R.string.cancel) { dialogInterface, i -> dialogInterface.dismiss() }
-                .setPositiveButton(android.R.string.ok) { dialogInterface, i ->
-                    startDownload(url, fileName, mDialog)
-                    dialogInterface.dismiss()
-                }
-
-        val dialog = builder.create()
-        dialog.show()
+        startDownload(url, fileName, mDialog)
     }
 
     private fun extractUrlFromClipboard(): Boolean {
-        val urlFromClipboard = urlFromClipboard
-        if (urlFromClipboard != null && !TextUtils.isEmpty(urlFromClipboard)) {
+        val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val urlFromClipboard = Clipboarder.getUrlFromClipboard(clipboardManager)
+        if (urlFromClipboard != null && !urlFromClipboard.isBlank()) {
             mUrl?.setText(urlFromClipboard)
             mUrlTextWatcher.onTextChanged(urlFromClipboard, 0, 0, urlFromClipboard.length)
             return true
@@ -231,11 +226,9 @@ class DownloadDialog : Activity() {
     }
 
     private fun showToast(text: String, isLong: Boolean) {
-        showToast(text, if (isLong) Toast.LENGTH_LONG else Toast.LENGTH_SHORT)
-    }
-
-    private fun showToast(text: String, length: Int) {
         mToast?.cancel()
+
+        val length = if (isLong) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
         mToast = Toast.makeText(this, text, length)
         mToast?.show()
     }
@@ -249,65 +242,11 @@ class DownloadDialog : Activity() {
         return if (TextUtils.isEmpty(content)) null else content.trim { it <= ' ' }
     }
 
-    private val urlFromClipboard: String?
-        @DebugLog get() {
-            val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            if (clipboardManager.hasPrimaryClip()) {
-                val clipData = clipboardManager.primaryClip
-                if (clipData.itemCount > 0) {
-                    val item = clipData.getItemAt(0)
-                    val clipCharSequence = item.text
-                    var clipText: String? = clipCharSequence?.toString()
-
-                    if (clipText != null) {
-                        clipText = clipText.trim { it <= ' ' }
-                        if (!TextUtils.isEmpty(clipText)) {
-                            if (clipText.startsWith("http")) {
-                                return clipText
-                            }
-                        }
-                    }
-                }
-            }
-            return null
-        }
-
     companion object {
         fun createIntent(context: Context): Intent {
             val intent = Intent(context, DownloadDialog::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             return intent
-        }
-
-        @DebugLog fun extractFilename(name: String?): String? {
-            if (name == null) {
-                return null
-            }
-
-            var finalName = name.trim { it <= ' ' }
-            if (TextUtils.isEmpty(finalName)) {
-                return null
-            }
-
-            // split the url and get the last part, which should be the filename
-            // example https://example.com/images/new/random_image.png -> random_image.png
-            val parts = finalName.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            if (parts.size < 2) {
-                return null
-            }
-
-            finalName = parts[parts.size - 1]
-
-            // if the last part of the url contains a question mark (?) there is most likely the case
-            // that a query is attached to the file name, lets get rid of it
-            val index = finalName.indexOf("?")
-            if (index != -1) {
-                // random_image.png?cdn_timestamp=1058239&session=92990 -> random_image.png
-                finalName = finalName.substring(0, index)
-            }
-
-            // let's trim it a last time and it should be good to go
-            return finalName.trim { it <= ' ' }
         }
     }
 
