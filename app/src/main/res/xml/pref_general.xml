@@ -66,4 +66,15 @@
             android:title="@string/auto_detect" />
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="cat_clipboard"
+        android:title="@string/category_clipboard">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/key_detect_clipboard_changes"
+            android:persistent="true"
+            android:summary="@string/detect_clipboard_changes_summary"
+            android:title="@string/detect_clipboard_changes" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

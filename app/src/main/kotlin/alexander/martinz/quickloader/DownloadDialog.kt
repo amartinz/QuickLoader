@@ -15,6 +15,9 @@
  */
 package alexander.martinz.quickloader
 
+import alexander.martinz.quickloader.common.getPref
+import alexander.martinz.quickloader.common.setPref
+import alexander.martinz.quickloader.services.ClipboardService
 import alexander.martinz.quickloader.tiles.TilePublisher
 import android.Manifest
 import android.annotation.SuppressLint
@@ -34,7 +37,6 @@ import android.support.design.widget.TextInputLayout
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Patterns
 import android.view.View
 import android.widget.*
 import com.tbruyelle.rxpermissions.RxPermissions
@@ -112,8 +114,6 @@ class DownloadDialog : Activity() {
         super.onCreate(savedInstanceState)
         @SuppressLint("InflateParams") val v = layoutInflater.inflate(R.layout.dialog_download, null, false)
 
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-
         mUrlLayout = v.findViewById(R.id.layout_et_download_url) as TextInputLayout
         mUrl = v.findViewById(R.id.et_download_url) as EditText
         mUrl?.addTextChangedListener(mUrlTextWatcher)
@@ -132,18 +132,18 @@ class DownloadDialog : Activity() {
                     mUrlTextWatcher.onTextChanged(url, 0, 0, url?.length ?: 0)
                 }
             }
-            preferences!!.edit().putBoolean(getString(R.string.key_auto_detect), checked).apply()
+            setPref(R.string.key_auto_detect, checked)
         }
-        mAutoDetect?.isChecked = preferences.getBoolean(getString(R.string.key_auto_detect), true)
+        mAutoDetect?.isChecked = getPref(R.string.key_auto_detect, true)
 
         val autoExtract = v.findViewById(R.id.switch_auto_extract) as Switch
-        autoExtract.isChecked = preferences.getBoolean(getString(R.string.key_auto_extract), true)
+        autoExtract.isChecked = getPref(R.string.key_auto_extract, true)
         autoExtract.setOnCheckedChangeListener { compoundButton, checked ->
             if (checked) {
                 extractUrlFromClipboard()
             }
 
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(getString(R.string.key_auto_extract), checked).apply()
+            setPref(R.string.key_auto_extract, checked)
         }
 
         val tvAutoDetect = v.findViewById(R.id.tv_auto_detect) as TextView
@@ -176,7 +176,11 @@ class DownloadDialog : Activity() {
         mDialog?.setOnDismissListener { finish() }
         mDialog?.show()
 
-        AsyncTask.execute { TilePublisher.publishCustomTile(this@DownloadDialog) }
+        AsyncTask.execute {
+            TilePublisher.publishCustomTile(this@DownloadDialog)
+
+            ClipboardService.startIfNeeded(this)
+        }
     }
 
     override fun onResume() {

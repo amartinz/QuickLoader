@@ -82,3 +82,6 @@
 
 # RxAndroid
 -dontwarn rx.internal.util.**
+
+# utility classes
+-keep class alexander.martinz.quickloader.common.Contexter

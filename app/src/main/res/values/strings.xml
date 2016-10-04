@@ -20,10 +20,6 @@
     <string name="download">Download</string>
     <string name="enter_url">Enter URL to file</string>
     <string name="save_file_as">Save file as</string>
-    <string name="auto_detect">Auto detect</string>
-    <string name="auto_detect_summary">If enabled, the file name gets auto detected via the entered URL</string>
-    <string name="auto_extract">Auto insert URL from clipboard</string>
-    <string name="auto_extract_summary">If enabled, the last URL you copied to your clipboard will get inserted when launching QuickLoader</string>
 
     <string name="filename_must_not_be_empty">Filename must not be empty!</string>
     <string name="url_not_valid">URL is not valid!</string>
@@ -51,6 +47,14 @@
     <string name="message_cancel_notification">Removed QuickLoader notification!</string>
 
     <string name="category_general">General</string>
+    <string name="auto_detect">Auto detect</string>
+    <string name="auto_detect_summary">If enabled, the file name gets auto detected via the entered URL</string>
+    <string name="auto_extract">Auto insert URL from clipboard</string>
+    <string name="auto_extract_summary">If enabled, the last URL you copied to your clipboard will get inserted when launching QuickLoader</string>
+
+    <string name="category_clipboard">Clipboard</string>
+    <string name="detect_clipboard_changes">Detect changes</string>
+    <string name="detect_clipboard_changes_summary">Detect if you copy an URL and automatically open QuickLoader</string>
 
     <string name="toast_permission_grant">Need to grant storage permission to download!</string>
 </resources>

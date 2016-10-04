@@ -16,11 +16,13 @@
 
 package alexander.martinz.quickloader
 
+import alexander.martinz.quickloader.services.ClipboardService
 import alexander.martinz.quickloader.tiles.TilePublisher
 import android.os.Build
 import android.os.Bundle
 import android.preference.Preference
 import android.preference.PreferenceFragment
+import android.preference.SwitchPreference
 import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
@@ -32,9 +34,11 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         fragmentManager.beginTransaction().replace(R.id.fragment_container, SettingsFragment()).commit()
+
+        ClipboardService.startIfNeeded(this)
     }
 
-    class SettingsFragment : PreferenceFragment(), Preference.OnPreferenceClickListener {
+    class SettingsFragment : PreferenceFragment(), Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
         private var mOpenQuickLoader: Preference? = null
 
         private var mPublishTile: Preference? = null
@@ -42,6 +46,8 @@ class SettingsActivity : AppCompatActivity() {
 
         private var mPublishNotif: Preference? = null
         private var mCancelNotif: Preference? = null
+
+        private var mClipboardDetectChanges: SwitchPreference? = null
 
         private var mToast: Toast? = null
 
@@ -69,6 +75,9 @@ class SettingsActivity : AppCompatActivity() {
 
             mCancelNotif = findPreference(getString(R.string.key_cancel_notification))
             mCancelNotif?.onPreferenceClickListener = this
+
+            mClipboardDetectChanges = findPreference(getString(R.string.key_detect_clipboard_changes)) as SwitchPreference
+            mClipboardDetectChanges?.onPreferenceChangeListener = this
         }
 
         override fun onPreferenceClick(preference: Preference): Boolean {
@@ -91,6 +100,18 @@ class SettingsActivity : AppCompatActivity() {
                 return true
             }
             return false
+        }
+
+        override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
+            if (preference == mClipboardDetectChanges) {
+                val enabled = newValue as Boolean
+                if (enabled) {
+                    ClipboardService.start(context)
+                } else {
+                    ClipboardService.stop(context)
+                }
+            }
+            return true
         }
 
         private fun showToast(@StringRes textResId: Int) {

@@ -72,6 +72,8 @@
             </intent-filter>
         </receiver>
 
+        <service android:name=".services.ClipboardService" />
+
         <service
             android:name=".tiles.AwesomeTileService"
             android:icon="@drawable/ic_cloud_download_white_24dp"

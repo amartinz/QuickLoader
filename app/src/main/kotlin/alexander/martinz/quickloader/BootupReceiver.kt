@@ -15,6 +15,7 @@
  */
 package alexander.martinz.quickloader
 
+import alexander.martinz.quickloader.services.ClipboardService
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -33,6 +34,8 @@ class BootupReceiver : BroadcastReceiver() {
             }
 
             TilePublisher.publishCustomTile(context)
+
+            ClipboardService.startIfNeeded(context)
         }
     }
 }

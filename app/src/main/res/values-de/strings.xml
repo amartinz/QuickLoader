@@ -20,10 +20,6 @@
     <string name="download">Download</string>
     <string name="enter_url">URL zur Datei eingeben</string>
     <string name="save_file_as">Speichere Datei als</string>
-    <string name="auto_detect">Automatisch erkennen</string>
-    <string name="auto_detect_summary">Erkennt den Dateinamen anhand der eingegebenen URL</string>
-    <string name="auto_extract">Automatisch URL einfügen</string>
-    <string name="auto_extract_summary">Die letzte kopierte URL wird von der Zwischenablage eingefügt</string>
 
     <string name="filename_must_not_be_empty">Der Dateiname darf nicht leer sein!</string>
     <string name="url_not_valid">URL ungültig!</string>
@@ -51,6 +47,14 @@
     <string name="message_cancel_notification">QuickLoader Benachrichtigung entfernt!</string>
 
     <string name="category_general">Allgemein</string>
+    <string name="auto_detect">Automatisch erkennen</string>
+    <string name="auto_detect_summary">Erkennt den Dateinamen anhand der eingegebenen URL</string>
+    <string name="auto_extract">Automatisch URL einfügen</string>
+    <string name="auto_extract_summary">Die letzte kopierte URL wird von der Zwischenablage eingefügt</string>
+
+    <string name="category_clipboard">Zwischenablage</string>
+    <string name="detect_clipboard_changes">Erkenne Änderungen</string>
+    <string name="detect_clipboard_changes_summary">Erkennen, wenn eine URL kopiert wird und QuickLoader öffnen</string>
 
     <string name="toast_permission_grant">Speicher-Berechtigung erforderlich zum Downloaden!</string>
 </resources>
