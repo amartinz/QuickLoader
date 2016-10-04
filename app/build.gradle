@@ -44,8 +44,8 @@ android {
         // https://twitter.com/minsdkversion
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 23
-        versionName '1.2.0'
+        versionCode 24
+        versionName '1.3.0'
 
         def String gitRevision = getGitCommitHash()
         if (gitRevision != null) {
